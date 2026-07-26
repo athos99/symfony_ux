@@ -1,7 +1,146 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello Symfony & Twig{% endblock %}
+{% block title %}Tic Tac Toe Arena - Défi Système{% endblock %}
+
+{% block stylesheets %}
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Outfit', sans-serif;
+        }
+    </style>
+{% endblock %}
 
 {% block body %}
-<h1>hello</h1>
+<div class="min-h-screen w-full bg-gradient-to-br from-slate-950 via-indigo-950 to-slate-900 text-slate-100 flex flex-col justify-between py-12 px-4 selection:bg-cyan-500/30 selection:text-cyan-200">
+    
+    <!-- Main Content Container -->
+    <main class="flex-grow flex flex-col items-center justify-center max-w-lg mx-auto w-full my-auto space-y-8">
+        
+        <!-- Header -->
+        <div class="text-center space-y-2">
+            <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-indigo-500/10 text-indigo-300 border border-indigo-500/20 tracking-wider uppercase">
+                Challenge IA autonome
+            </span>
+            <h1 class="text-4xl md:text-5xl font-extrabold tracking-tight bg-gradient-to-r from-cyan-400 via-indigo-300 to-rose-400 bg-clip-text text-transparent">
+                Tic Tac Toe
+            </h1>
+            <p class="text-slate-400 text-sm md:text-base font-light">
+                Affrontez notre système dans un duel stratégique.
+            </p>
+        </div>
+
+        <!-- Glassmorphism Board & Settings Panel -->
+        <div class="w-full bg-slate-950/40 backdrop-blur-xl border border-slate-800/80 rounded-3xl p-6 shadow-2xl space-y-6 relative overflow-hidden" 
+             data-controller="tic-tac-toe">
+            
+            <!-- Subtle background glows inside card -->
+            <div class="absolute -top-24 -left-24 w-48 h-48 bg-cyan-500/10 rounded-full blur-3xl pointer-events-none"></div>
+            <div class="absolute -bottom-24 -right-24 w-48 h-48 bg-rose-500/10 rounded-full blur-3xl pointer-events-none"></div>
+
+            <!-- Parameters Grid -->
+            <div class="grid grid-cols-2 gap-4 relative z-10">
+                <!-- Starting Player selector -->
+                <div class="space-y-1.5">
+                    <label for="starter-select" class="block text-2xs font-semibold uppercase tracking-wider text-slate-400">
+                        Qui commence ?
+                    </label>
+                    <div class="relative">
+                        <select id="starter-select" 
+                                data-tic-tac-toe-target="startingPlayer" 
+                                data-action="change->tic-tac-toe#startNewGame"
+                                class="w-full bg-slate-900/60 border border-slate-800 rounded-xl px-3 py-2.5 text-sm text-slate-200 focus:outline-none focus:border-cyan-500/50 focus:ring-1 focus:ring-cyan-500/30 transition-all appearance-none cursor-pointer">
+                            <option value="user">Moi (✕)</option>
+                            <option value="system">Système (◯)</option>
+                        </select>
+                        <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-slate-400">
+                            <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+                                <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/>
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Difficulty selector -->
+                <div class="space-y-1.5">
+                    <label for="difficulty-select" class="block text-2xs font-semibold uppercase tracking-wider text-slate-400">
+                        Niveau du Système
+                    </label>
+                    <div class="relative">
+                        <select id="difficulty-select" 
+                                data-tic-tac-toe-target="difficulty" 
+                                data-action="change->tic-tac-toe#startNewGame"
+                                class="w-full bg-slate-900/60 border border-slate-800 rounded-xl px-3 py-2.5 text-sm text-slate-200 focus:outline-none focus:border-cyan-500/50 focus:ring-1 focus:ring-cyan-500/30 transition-all appearance-none cursor-pointer">
+                            <option value="smart">Imbattable (Minimax)</option>
+                            <option value="easy">Facile (Aléatoire)</option>
+                        </select>
+                        <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-slate-400">
+                            <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+                                <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/>
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Separator line -->
+            <div class="h-px bg-slate-800/60 w-full"></div>
+
+            <!-- Status Indicator Panel -->
+            <div data-tic-tac-toe-target="status" 
+                 class="h-10 flex items-center justify-center text-sm font-medium tracking-wide relative z-10">
+                <!-- Status populated by stimulus controller -->
+            </div>
+
+            <!-- The Game Board (Grid 3x3) -->
+            <div class="grid grid-cols-3 gap-3.5 max-w-[320px] mx-auto w-full aspect-square p-2 bg-slate-900/30 border border-slate-800/80 rounded-2xl relative z-10 shadow-inner">
+                {% for i in 0..8 %}
+                    <button data-tic-tac-toe-target="cell"
+                            data-index="{{ i }}"
+                            data-action="click->tic-tac-toe#makeMove"
+                            class="w-full aspect-square flex items-center justify-center rounded-xl border border-slate-800 bg-slate-900/40 hover:bg-slate-800/40 active:scale-95 transition-all duration-200 cursor-pointer focus:outline-none focus:ring-2 focus:ring-cyan-500/30"
+                            aria-label="Case {{ i + 1 }}">
+                    </button>
+                {% endfor %}
+            </div>
+
+            <!-- Scoreboard -->
+            <div class="grid grid-cols-3 gap-3 relative z-10 pt-2 text-center">
+                <!-- User Score -->
+                <div class="bg-slate-900/50 border border-slate-850 rounded-xl p-2.5">
+                    <div class="text-2xs font-semibold uppercase tracking-wider text-cyan-400">Moi (✕)</div>
+                    <div data-tic-tac-toe-target="userScore" class="text-xl font-bold text-slate-100 mt-0.5">0</div>
+                </div>
+                <!-- Ties Score -->
+                <div class="bg-slate-900/50 border border-slate-850 rounded-xl p-2.5">
+                    <div class="text-2xs font-semibold uppercase tracking-wider text-yellow-500">Nuls</div>
+                    <div data-tic-tac-toe-target="tiesScore" class="text-xl font-bold text-slate-100 mt-0.5">0</div>
+                </div>
+                <!-- System Score -->
+                <div class="bg-slate-900/50 border border-slate-850 rounded-xl p-2.5">
+                    <div class="text-2xs font-semibold uppercase tracking-wider text-rose-500">Système (◯)</div>
+                    <div data-tic-tac-toe-target="systemScore" class="text-xl font-bold text-slate-100 mt-0.5">0</div>
+                </div>
+            </div>
+
+            <!-- Controls (Restart button) -->
+            <div class="pt-2 relative z-10">
+                <button data-action="click->tic-tac-toe#startNewGame"
+                        class="w-full py-3 px-4 bg-gradient-to-r from-indigo-600 to-indigo-700 hover:from-indigo-500 hover:to-indigo-600 active:scale-[0.98] text-white font-medium rounded-xl shadow-lg shadow-indigo-950/40 hover:shadow-indigo-500/10 focus:outline-none focus:ring-2 focus:ring-indigo-500/50 border border-indigo-400/20 transition-all duration-200">
+                    Réinitialiser la Partie
+                </button>
+            </div>
+
+        </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="text-center text-xs text-slate-500 font-light mt-12">
+        <p>Créé avec Symfony UX & Tailwind CSS v4</p>
+    </footer>
+
+</div>
 {% endblock %}

@@ -9,6 +9,7 @@
 
 /* You can customize theming here see https://flowbite.com/docs/customize/theming/ */
 @theme {
+     --color-body: var(--color-cyan-600);
     --color-fg var(--color-red-500)
     --color-bg-white var(--green-400)
     --font-sans:
@@ -240,9 +241,33 @@
     --color-dark-subtle: var(--color-gray-700);
     --color-dark-backdrop: var(--color-gray-950);
 }
-
-
-
 @layer base {
-  body {background-color: bisque;}
+  body {
+    background-color: transparent;
+  }
+}
+
+/* Tic Tac Toe SVG Animations */
+@keyframes drawStroke {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+.draw-line {
+  stroke-dasharray: 24;
+  stroke-dashoffset: 24;
+  animation: drawStroke 0.25s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+.draw-line-delayed {
+  stroke-dasharray: 24;
+  stroke-dashoffset: 24;
+  animation: drawStroke 0.25s cubic-bezier(0.4, 0, 0.2, 1) 0.15s forwards;
+}
+
+.draw-circle {
+  stroke-dasharray: 58;
+  stroke-dashoffset: 58;
+  animation: drawStroke 0.35s cubic-bezier(0.4, 0, 0.2, 1) forwards;
 }
