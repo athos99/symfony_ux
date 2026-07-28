@@ -29,8 +29,8 @@ export default class extends Controller {
         // Clear cells
         this.cellTargets.forEach(cell => {
             cell.innerHTML = '';
-            cell.classList.remove('bg-indigo-950/40', 'border-cyan-500/40', 'border-rose-500/40', 'shadow-[0_0_15px_rgba(6,182,212,0.15)]', 'shadow-[0_0_15px_rgba(244,63,94,0.15)]');
-            cell.classList.add('bg-slate-900/40', 'border-slate-800');
+            cell.classList.remove('bg-indigo-950/40', 'border-cyan-500/40', 'border-rose-500/40', 'bg-rose-950/20', 'shadow-[0_0_15px_rgba(6,182,212,0.15)]', 'shadow-[0_0_15px_rgba(244,63,94,0.15)]');
+            cell.classList.add('tic-tac-cell');
             cell.removeAttribute('disabled');
         });
 
@@ -101,10 +101,10 @@ export default class extends Controller {
         if (!cell) return;
 
         // Animate cell styling
-        cell.classList.remove('bg-slate-900/40', 'border-slate-800');
+        cell.classList.remove('tic-tac-cell');
         
         if (player === 'X') {
-            cell.classList.add('bg-indigo-950/40', 'border-cyan-500/40', 'shadow-[0_0_15px_rgba(6,182,212,0.15)]');
+            cell.classList.add('bg-indigo-950/60', 'border-cyan-400/70', 'shadow-[0_0_20px_rgba(34,211,238,0.28)]');
             cell.innerHTML = `
                 <svg class="w-12 h-12 text-cyan-400 stroke-current" viewBox="0 0 24 24" fill="none" stroke-width="3" stroke-linecap="round">
                     <line x1="18" y1="6" x2="6" y2="18" class="draw-line"></line>
@@ -112,7 +112,7 @@ export default class extends Controller {
                 </svg>
             `;
         } else {
-            cell.classList.add('bg-rose-950/20', 'border-rose-500/40', 'shadow-[0_0_15px_rgba(244,63,94,0.15)]');
+            cell.classList.add('bg-rose-950/30', 'border-rose-400/70', 'shadow-[0_0_20px_rgba(244,63,94,0.28)]');
             cell.innerHTML = `
                 <svg class="w-12 h-12 text-rose-500 stroke-current" viewBox="0 0 24 24" fill="none" stroke-width="3" stroke-linecap="round">
                     <circle cx="12" cy="12" r="9" class="draw-circle"></circle>

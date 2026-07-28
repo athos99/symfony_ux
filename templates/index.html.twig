@@ -95,12 +95,12 @@
             </div>
 
             <!-- The Game Board (Grid 3x3) -->
-            <div class="grid grid-cols-3 gap-3.5 max-w-[320px] mx-auto w-full aspect-square p-2 bg-slate-900/30 border border-slate-800/80 rounded-2xl relative z-10 shadow-inner">
+            <div class="tic-tac-board grid grid-cols-3 gap-3.5 max-w-[320px] mx-auto w-full aspect-square p-2 rounded-2xl relative z-10">
                 {% for i in 0..8 %}
                     <button data-tic-tac-toe-target="cell"
                             data-index="{{ i }}"
                             data-action="click->tic-tac-toe#makeMove"
-                            class="w-full aspect-square flex items-center justify-center rounded-xl border border-slate-800 bg-slate-900/40 hover:bg-slate-800/40 active:scale-95 transition-all duration-200 cursor-pointer focus:outline-none focus:ring-2 focus:ring-cyan-500/30"
+                            class="tic-tac-cell w-full aspect-square flex items-center justify-center rounded-xl active:scale-95 transition-all duration-200 cursor-pointer focus:outline-none"
                             aria-label="Case {{ i + 1 }}">
                     </button>
                 {% endfor %}
