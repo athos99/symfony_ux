@@ -12,7 +12,7 @@ export default class extends Controller {
         this.board = Array(9).fill(null);
         this.currentPlayer = 'X'; // X is User, O is System
         this.gameActive = true;
-        
+
         // Load initial state
         this.updateScoreboard();
         this.startNewGame();
@@ -21,7 +21,7 @@ export default class extends Controller {
     startNewGame() {
         this.board = Array(9).fill(null);
         this.gameActive = true;
-        
+
         // Determine starting player
         const starter = this.startingPlayerTarget.value;
         this.currentPlayer = starter === 'user' ? 'X' : 'O';
@@ -97,12 +97,12 @@ export default class extends Controller {
     placeSymbol(index, player) {
         this.board[index] = player;
         const cell = this.cellTargets.find(c => parseInt(c.dataset.index) === index);
-        
+
         if (!cell) return;
 
         // Animate cell styling
         cell.classList.remove('tic-tac-cell');
-        
+
         if (player === 'X') {
             cell.classList.add('bg-indigo-950/60', 'border-cyan-400/70', 'shadow-[0_0_20px_rgba(34,211,238,0.28)]');
             cell.innerHTML = `
@@ -202,7 +202,7 @@ export default class extends Controller {
     highlightWinner(line, player) {
         const borderClass = player === 'X' ? 'border-cyan-400 bg-cyan-950/20' : 'border-rose-400 bg-rose-950/40';
         const pulseClass = 'animate-pulse scale-105 transition-all duration-300';
-        
+
         line.forEach(index => {
             const cell = this.cellTargets.find(c => parseInt(c.dataset.index) === index);
             if (cell) {
@@ -250,10 +250,10 @@ export default class extends Controller {
             if (this.board[i] === null) {
                 // Make move
                 this.board[i] = 'O';
-                
+
                 // Evaluate move
                 let moveVal = this.minimax(0, false);
-                
+
                 // Undo move
                 this.board[i] = null;
 

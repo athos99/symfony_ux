@@ -15,10 +15,10 @@
 
 {% block body %}
 <div class="min-h-screen w-full bg-gradient-to-br from-slate-950 via-indigo-950 to-slate-900 text-slate-100 flex flex-col justify-between py-12 px-4 selection:bg-cyan-500/30 selection:text-cyan-200">
-    
+
     <!-- Main Content Container -->
     <main class="flex-grow flex flex-col items-center justify-center max-w-lg mx-auto w-full my-auto space-y-8">
-        
+
         <!-- Header -->
         <div class="text-center space-y-2">
             <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-indigo-500/10 text-indigo-300 border border-indigo-500/20 tracking-wider uppercase">
@@ -33,9 +33,9 @@
         </div>
 
         <!-- Glassmorphism Board & Settings Panel -->
-        <div class="w-full bg-slate-950/40 backdrop-blur-xl border border-slate-800/80 rounded-3xl p-6 shadow-2xl space-y-6 relative overflow-hidden" 
+        <div class="w-full bg-slate-950/40 backdrop-blur-xl border border-slate-800/80 rounded-3xl p-6 shadow-2xl space-y-6 relative overflow-hidden"
              data-controller="tic-tac-toe">
-            
+
             <!-- Subtle background glows inside card -->
             <div class="absolute -top-24 -left-24 w-48 h-48 bg-cyan-500/10 rounded-full blur-3xl pointer-events-none"></div>
             <div class="absolute -bottom-24 -right-24 w-48 h-48 bg-rose-500/10 rounded-full blur-3xl pointer-events-none"></div>
@@ -48,8 +48,8 @@
                         Qui commence ?
                     </label>
                     <div class="relative">
-                        <select id="starter-select" 
-                                data-tic-tac-toe-target="startingPlayer" 
+                        <select id="starter-select"
+                                data-tic-tac-toe-target="startingPlayer"
                                 data-action="change->tic-tac-toe#startNewGame"
                                 class="w-full bg-slate-900/60 border border-slate-800 rounded-xl px-3 py-2.5 text-sm text-slate-200 focus:outline-none focus:border-cyan-500/50 focus:ring-1 focus:ring-cyan-500/30 transition-all appearance-none cursor-pointer">
                             <option value="user">Moi (✕)</option>
@@ -69,8 +69,8 @@
                         Niveau du Système
                     </label>
                     <div class="relative">
-                        <select id="difficulty-select" 
-                                data-tic-tac-toe-target="difficulty" 
+                        <select id="difficulty-select"
+                                data-tic-tac-toe-target="difficulty"
                                 data-action="change->tic-tac-toe#startNewGame"
                                 class="w-full bg-slate-900/60 border border-slate-800 rounded-xl px-3 py-2.5 text-sm text-slate-200 focus:outline-none focus:border-cyan-500/50 focus:ring-1 focus:ring-cyan-500/30 transition-all appearance-none cursor-pointer">
                             <option value="smart">Imbattable (Minimax)</option>
@@ -89,7 +89,7 @@
             <div class="h-px bg-slate-800/60 w-full"></div>
 
             <!-- Status Indicator Panel -->
-            <div data-tic-tac-toe-target="status" 
+            <div data-tic-tac-toe-target="status"
                  class="h-10 flex items-center justify-center text-sm font-medium tracking-wide relative z-10">
                 <!-- Status populated by stimulus controller -->
             </div>
