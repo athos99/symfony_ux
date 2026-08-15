@@ -30,7 +30,7 @@ export default class extends Controller {
         this.cellTargets.forEach(cell => {
             cell.innerHTML = '';
             cell.classList.remove('bg-indigo-950/40', 'border-cyan-500/40', 'border-rose-500/40', 'bg-rose-950/20', 'shadow-[0_0_15px_rgba(6,182,212,0.15)]', 'shadow-[0_0_15px_rgba(244,63,94,0.15)]');
-            cell.classList.add('tic-tac-cell');
+            cell.classList.add('morpion-cell');
             cell.removeAttribute('disabled');
         });
 
@@ -101,7 +101,7 @@ export default class extends Controller {
         if (!cell) return;
 
         // Animate cell styling
-        cell.classList.remove('tic-tac-cell');
+        cell.classList.remove('morpion-cell');
 
         if (player === 'X') {
             cell.classList.add('bg-indigo-950/60', 'border-cyan-400/70', 'shadow-[0_0_20px_rgba(34,211,238,0.28)]');
