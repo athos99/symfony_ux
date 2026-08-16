@@ -21,7 +21,7 @@
   --color-heading: var(--color-white);
 }
 
-@layer components {
+@layer base {
   body {
     background-color: #FFA;
   }
