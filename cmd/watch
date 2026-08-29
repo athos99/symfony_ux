@@ -1,2 +1,3 @@
 #!/usr/bin/env sh
-php bin/console tailwind:build --watch 
+rm -R public/assets/*
+php bin/console tailwind:build --watch

@@ -1,5 +1,6 @@
 @import 'tailwindcss';
-
+@import "flowbite/src/themes/default";
+@plugin "flowbite/plugin";
 /* With AssetMapper... */
 @source "../vendor/flowbite";
 /* ... or with Webpack Encore */
@@ -11,7 +12,7 @@
 @theme {
   --color-body: var(--color-cyan-600);
   --color-fg: var(--color-red-500) ;
-  --color-bg-white: var(--green-400); 
+  --color-bg-white: var(--green-400);
 }
 
 .dark {

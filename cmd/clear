@@ -1,5 +1,3 @@
 #!/usr/bin/env sh
-rm -R var/cache* 
+rm -R var/cache*
 chmod a+rw -R *
-php bin/console tailwind:build --minify
-php bin/console asset-map:compile

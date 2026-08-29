@@ -31,4 +31,7 @@ return [
     '@popperjs/core' => ['version' => '2.11.8'],
     'flowbite-datepicker' => ['version' => '2.0.0'],
     'flowbite/dist/flowbite.min.css' => ['version' => '4.0.2', 'type' => 'css'],
+    'react' => ['version' => '18.2.0'],
+    'use-sync-external-store/shim/with-selector.js' => ['version' => '1.2.0'],
+    'use-sync-external-store/shim' => ['version' => '1.2.0'],
 ];
