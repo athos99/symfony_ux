@@ -3,5 +3,24 @@
 {% block title %}Hello Symfony & Twig{% endblock %}
 
 {% block main %}
-<h1>stimulus</h1>
+<div
+    data-controller="autocomplete"
+    data-autocomplete-url-value="{{ path('app_api_dossier_suggestions') }}"
+>
+    <label for="dossier-search">Rechercher un dossier</label>
+
+    <input
+        id="dossier-search"
+        type="search"
+        autocomplete="off"
+        data-autocomplete-target="input"
+        data-action="input->autocomplete#search"
+    >
+
+    <ul
+        data-autocomplete-target="results"
+        aria-live="polite"
+    ></ul>
+</div>
+
 {% endblock %}

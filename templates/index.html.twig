@@ -3,7 +3,10 @@
 {% block title %}Hello Symfony & Twig{% endblock %}
 
 {% block main %}
-<h1>hello</h1>
 
+<div data-controller="hello">
+
+</div>
+<a href="{{ path('app_test') }}">test</a>
 <a href="{{ path('app_stimulus_demo') }}">Stimulus demo</a>
 {% endblock %}
