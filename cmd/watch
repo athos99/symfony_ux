@@ -1,2 +1,2 @@
 #!/usr/bin/env sh
-php bin/console tailwind:build --watch &
+php bin/console tailwind:build --watch 
