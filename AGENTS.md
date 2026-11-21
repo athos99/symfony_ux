@@ -34,6 +34,19 @@ Ne jamais lancer `php`, `composer`, `yarn`, etc. directement sur l'hôte WSL/Win
   (variables du conteneur : `xdebug.start_with_request=yes`, `xdebug.mode=debug`,
   `xdebug.client_host=host.docker.internal`).
 
+## Playwright (navigateur)
+
+- **Chromium Playwright est installé et disponible sur l'hôte WSL** : `~/.cache/ms-playwright/`
+  (`chromium-1255`, `chromium_headless_shell-1255`, version **159.0.8154.6**), dépendances système incluses.
+- **Google Chrome 158.0.8127.36** est également installé (`/opt/google/chrome/chrome`) : requis par le
+  MCP Playwright de Kilo, lancé avec `npx @playwright/mcp@latest --browser chrome`.
+- Installation / mise à jour (sur l'hôte, hors conteneur) :
+  ```bash
+  npx playwright install chromium   # ou: npx playwright install chrome
+  ```
+- `apt-get update` émet une erreur sur les PPA `ondrej/php` et `ondrej/apache2` (changement de Label) :
+  utiliser `sudo apt-get -o Acquire::AllowReleaseInfoChange=true update`.
+
 ## Commandes utiles
 
 ```bash
