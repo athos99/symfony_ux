@@ -1,10 +1,10 @@
-import './stimulus_bootstrap.js';
+import { startStimulusApp } from '@symfony/reprise/stimulus';
+
+startStimulusApp();
 /*
  * Welcome to your app's main JavaScript file!
  *
- * This file will be included onto the page via the importmap() Twig function,
- * which should already be in your base.html.twig.
+ * This file is the Vite entry point rendered by Symfony Reprise in Twig.
  */
 import './styles/app.css';
 
-console.log('This log comes from assets/app.js - welcome to AssetMapper! 🎉');

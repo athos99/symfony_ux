@@ -1,0 +1,7 @@
+reprise:
+    output_path: '%kernel.project_dir%/public/build'
+
+when@prod:
+    reprise:
+        strict_mode: false
+        cache: true

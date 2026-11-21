@@ -4,8 +4,11 @@
 
 - Symfony **8.1.\***, PHP **8.5** dans le conteneur (`composer.json` exige `php >= 8.4`).
 - Base **PostgreSQL** (`DATABASE_URL` dans `.env`), locale par défaut **`en`**.
-- Assets gérés par **Symfony AssetMapper / importmap** : aucun `package.json` à la racine,
-  donc **ne pas utiliser npm** pour les assets.
+- Assets gérés par **Symfony Reprise + Vite** (`@symfony/reprise` et `vite` dans `package.json`),
+  avec Yarn pour les dépendances JavaScript. Ne pas utiliser npm ; exécuter Yarn dans le conteneur `php85`.
+- Reprise requiert Node.js **22.18+** ; le conteneur fournit Node.js 26.
+- Les sources front sont dans `assets/`, Vite est configuré dans `vite.config.js` et les fichiers compilés
+  sont publiés dans `public/build/`.
 - Namespace racine `App\` → `src/`, `App\Tests\` → `tests/`.
 
 ## Environnement d'exécution (obligatoire)
@@ -27,7 +30,7 @@ docker exec -it php85 bash -c "cd /var/www/symfony-ux && bash"
 ```
 
 Outils dans `php85` : `php` 8.5, `composer` 2.11, `node` 26, `yarn` 1.22.
-Ne jamais lancer `php`, `composer`, `yarn`, etc. directement sur l'hôte WSL/Windows.
+Ne jamais lancer `php`, `composer`, `yarn`, `vite`, etc. directement sur l'hôte WSL/Windows.
 
 - URL navigateur (Windows) : `http://localhost/symfony-ux/public/`
 - Xdebug est installé pour le debug et le code coverage depuis VS Code
@@ -53,8 +56,18 @@ Ne jamais lancer `php`, `composer`, `yarn`, etc. directement sur l'hôte WSL/Win
 # Cache
 docker exec php85 bash -c "cd /var/www/symfony-ux && php bin/console cache:clear"
 
-# Assets (AssetMapper / importmap)
-docker exec php85 bash -c "cd /var/www/symfony-ux && php bin/console importmap:install"
+# Dépendances front-end (après modification de package.json / yarn.lock)
+docker exec php85 bash -c "cd /var/www/symfony-ux && yarn install --frozen-lockfile"
+
+# Vite (serveur de développement)
+docker exec -it php85 bash -c "cd /var/www/symfony-ux && yarn dev --host 0.0.0.0"
+# Le port 5173 du conteneur doit être accessible depuis l'hôte pour HMR (http://localhost:5173).
+
+# Compiler les assets pour la production
+docker exec php85 bash -c "cd /var/www/symfony-ux && yarn build"
+
+# Vérifier le mode et les URLs actuellement rendus par Reprise
+docker exec php85 bash -c "cd /var/www/symfony-ux && cat public/build/entrypoints.json"
 
 # Migrations Doctrine
 docker exec php85 bash -c "cd /var/www/symfony-ux && php bin/console doctrine:migrations:diff"
@@ -71,7 +84,9 @@ docker exec php85 bash -c "cd /var/www/symfony-ux && php bin/phpunit --filter=Ma
 - `src/Entity/`, `src/Repository/` — Doctrine (actuellement vides)
 - `src/Kernel.php`
 - `templates/` — vues Twig (`base.html.twig`, `home/index.html.twig`)
-- `assets/` — `app.js`, `stimulus_bootstrap.js`, `controllers/`, `styles/app.css`
+- `assets/` — `app.js`, `controllers/`, `controllers.json`, `styles/app.css`
+- `vite.config.js`, `package.json`, `yarn.lock` — configuration et dépendances front-end
+- `public/build/` — sortie compilée Vite / Symfony Reprise (générée, non versionnée)
 - `config/packages/` — configuration par bundle
 - `migrations/` — migrations Doctrine (actuellement vide)
 - `tests/` — PHPUnit (seulement `bootstrap.php` pour l'instant, aucun test)
@@ -87,6 +102,11 @@ docker exec php85 bash -c "cd /var/www/symfony-ux && php bin/phpunit --filter=Ma
   (voir `when@test` dans `config/packages/`).
 - Aucun outil de lint ou d'analyse statique (PHPStan, ECS, PHP-CS-Fixer) n'est configuré :
   ne pas en inventer. Vérification minimale = `php bin/phpunit`.
+- La génération des assets est vérifiée avec `yarn build` dans le conteneur.
+- Si `public/build/entrypoints.json` contient `isProd: false` et une URL `localhost:5173`, Reprise sert
+  le manifeste du serveur Vite de développement : lancer `yarn dev` dans le conteneur pour le HMR ou
+  relancer `yarn build` pour revenir aux fichiers compilés. En production, vider le cache Symfony après
+  le build (`php bin/console cache:clear`) car Reprise y met les entrypoints en cache.
 
 ## Conventions
 
